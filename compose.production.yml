@@ -1,7 +1,7 @@
-# Dossier with Docker Compose (see the installation guide, https://github.com/AienTech/dossier/wiki). Save this
+# Hireline with Docker Compose (see the installation guide, https://github.com/achyuthkp27/hireline/tree/main/docs). Save this
 # file as compose.yml in a folder of its own, put POSTGRES_PASSWORD,
-# DOSSIER_PASSWORD (a hash of your password, from `docker run --rm -it
-# ghcr.io/aientech/dossier hash-password`) and DOSSIER_SECRET in a .env file
+# HIRELINE_PASSWORD (a hash of your password, from `docker run --rm -it
+# ghcr.io/achyuthkp27/hireline hash-password`) and HIRELINE_SECRET in a .env file
 # next to it, then:
 #
 #   docker compose up -d
@@ -13,52 +13,52 @@ services:
     image: postgres:18-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: dossier
+      POSTGRES_USER: hireline
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
-      POSTGRES_DB: dossier
+      POSTGRES_DB: hireline
     volumes:
       # Postgres 18+ keeps data in a versioned subdirectory, so mount the parent.
       - pgdata:/var/lib/postgresql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dossier -d dossier"]
+      test: ["CMD-SHELL", "pg_isready -U hireline -d hireline"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   app:
-    image: ${DOSSIER_IMAGE:-ghcr.io/aientech/dossier:latest}
+    image: ${HIRELINE_IMAGE:-ghcr.io/achyuthkp27/hireline:latest}
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://dossier:${POSTGRES_PASSWORD}@db:5432/dossier
-      DOSSIER_PASSWORD: ${DOSSIER_PASSWORD:?Set DOSSIER_PASSWORD in .env to a hash from hash-password}
-      DOSSIER_SECRET: ${DOSSIER_SECRET:?Set DOSSIER_SECRET in .env}
-      DOSSIER_BACKUP_RETENTION_DAYS: ${DOSSIER_BACKUP_RETENTION_DAYS:-}
+      DATABASE_URL: postgresql://hireline:${POSTGRES_PASSWORD}@db:5432/hireline
+      HIRELINE_PASSWORD: ${HIRELINE_PASSWORD:?Set HIRELINE_PASSWORD in .env to a hash from hash-password}
+      HIRELINE_SECRET: ${HIRELINE_SECRET:?Set HIRELINE_SECRET in .env}
+      HIRELINE_BACKUP_RETENTION_DAYS: ${HIRELINE_BACKUP_RETENTION_DAYS:-}
       # Your time zone, e.g. Europe/Berlin: nightly backups run at 03:00 in it.
       TZ: ${TZ:-}
-      DOSSIER_AI_PROVIDER: ${DOSSIER_AI_PROVIDER:-}
-      DOSSIER_AI_URL: ${DOSSIER_AI_URL:-}
-      DOSSIER_AI_MODEL: ${DOSSIER_AI_MODEL:-}
-      DOSSIER_AI_KEY: ${DOSSIER_AI_KEY:-}
-      DOSSIER_AI_TIMEOUT_SECONDS: ${DOSSIER_AI_TIMEOUT_SECONDS:-}
-      # The daily usage ping: unset, Dossier asks after sign-in; on or off answers in advance (see Privacy in the wiki).
-      DOSSIER_TELEMETRY: ${DOSSIER_TELEMETRY:-}
+      HIRELINE_AI_PROVIDER: ${HIRELINE_AI_PROVIDER:-}
+      HIRELINE_AI_URL: ${HIRELINE_AI_URL:-}
+      HIRELINE_AI_MODEL: ${HIRELINE_AI_MODEL:-}
+      HIRELINE_AI_KEY: ${HIRELINE_AI_KEY:-}
+      HIRELINE_AI_TIMEOUT_SECONDS: ${HIRELINE_AI_TIMEOUT_SECONDS:-}
+      # The daily usage ping: unset, Hireline asks after sign-in; on or off answers in advance (see Privacy in the docs).
+      HIRELINE_TELEMETRY: ${HIRELINE_TELEMETRY:-}
       # Defaults for Settings → Job search.
-      DOSSIER_JOBS_SOURCE: ${DOSSIER_JOBS_SOURCE:-}
-      DOSSIER_JSEARCH_KEY: ${DOSSIER_JSEARCH_KEY:-}
-      DOSSIER_JSEARCH_HOST: ${DOSSIER_JSEARCH_HOST:-}
-      DOSSIER_ADZUNA_APP_ID: ${DOSSIER_ADZUNA_APP_ID:-}
-      DOSSIER_ADZUNA_KEY: ${DOSSIER_ADZUNA_KEY:-}
+      HIRELINE_JOBS_SOURCE: ${HIRELINE_JOBS_SOURCE:-}
+      HIRELINE_JSEARCH_KEY: ${HIRELINE_JSEARCH_KEY:-}
+      HIRELINE_JSEARCH_HOST: ${HIRELINE_JSEARCH_HOST:-}
+      HIRELINE_ADZUNA_APP_ID: ${HIRELINE_ADZUNA_APP_ID:-}
+      HIRELINE_ADZUNA_KEY: ${HIRELINE_ADZUNA_KEY:-}
       # Gmail and Calendar: a Google OAuth client (or enter it in Settings → Google).
-      DOSSIER_GOOGLE_CLIENT_ID: ${DOSSIER_GOOGLE_CLIENT_ID:-}
-      DOSSIER_GOOGLE_CLIENT_SECRET: ${DOSSIER_GOOGLE_CLIENT_SECRET:-}
-      # The address Dossier is reached at, for Google's redirect.
-      DOSSIER_PUBLIC_URL: ${DOSSIER_PUBLIC_URL:-}
+      HIRELINE_GOOGLE_CLIENT_ID: ${HIRELINE_GOOGLE_CLIENT_ID:-}
+      HIRELINE_GOOGLE_CLIENT_SECRET: ${HIRELINE_GOOGLE_CLIENT_SECRET:-}
+      # The address Hireline is reached at, for Google's redirect.
+      HIRELINE_PUBLIC_URL: ${HIRELINE_PUBLIC_URL:-}
     # Only on the server itself: put a reverse proxy with HTTPS in front.
     ports:
-      - "127.0.0.1:${DOSSIER_PORT:-3000}:3000"
+      - "127.0.0.1:${HIRELINE_PORT:-3000}:3000"
     volumes:
       - data:/data
     # Room for Chromium, which prints the PDFs.
@@ -69,7 +69,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   # A local model, with COMPOSE_PROFILES=ai in .env: `docker compose up -d`,
-  # then pull one (see "Choosing an AI provider" in the wiki). Dossier reaches it at http://ollama:11434.
+  # then pull one (see "Choosing an AI provider" in the docs). Hireline reaches it at http://ollama:11434.
   ollama:
     profiles: [ai]
     image: ollama/ollama:0.40.6

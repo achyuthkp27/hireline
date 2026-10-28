@@ -16,12 +16,12 @@ import { liveLmStudio, liveMistral } from "./test-live";
 //   AI_LIVE=anthropic ANTHROPIC_TEST_KEY=… docker/bin/yarn vitest run src/lib/ai/providers.live.test.ts
 //   AI_LIVE=mistral docker/bin/yarn vitest run src/lib/ai/providers.live.test.ts
 //
-// Mistral's key is DOSSIER_AI_KEY when that's set, or else the one saved in
+// Mistral's key is HIRELINE_AI_KEY when that's set, or else the one saved in
 // Settings → AI provider with Mistral chosen.
 //
 //   AI_LIVE=lmstudio docker/bin/yarn vitest run src/lib/ai/providers.live.test.ts
 //
-// LM Studio's model is DOSSIER_AI_MODEL (at DOSSIER_AI_URL, by default on the
+// LM Studio's model is HIRELINE_AI_MODEL (at HIRELINE_AI_URL, by default on the
 // Docker host), or else the one saved in Settings with LM Studio chosen.
 // A model that isn't loaded gets loaded, and stays loaded until ejected.
 //

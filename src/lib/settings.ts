@@ -101,11 +101,11 @@ export const AGENT_RUNS_KEPT = 10;
 
 export const settingsSchema = z.object({
   // AI provider (SET-1). Null means "not set in the app": fall back to the
-  // DOSSIER_AI_* environment variables, then to the built-in defaults.
+  // HIRELINE_AI_* environment variables, then to the built-in defaults.
   provider: z.enum(AiProvider).nullable().catch(null),
   baseUrl: z.string().nullable().catch(null),
   model: z.string().nullable().catch(null),
-  /** Encrypted with a key derived from DOSSIER_SECRET (E6-2); never sent to the client. */
+  /** Encrypted with a key derived from HIRELINE_SECRET (E6-2); never sent to the client. */
   apiKeyEnc: z.string().nullable().catch(null),
   creativity: z.enum(Creativity).catch(Creativity.BALANCED),
   /** "Never invent experience" (SET-4). */
@@ -144,7 +144,7 @@ export const settingsSchema = z.object({
   educationOrder: z.enum(["date", "manual"]).catch("date"),
   /** Why the last nightly backup failed; null once one works again (E10-7). */
   backupProblem: z.string().nullable().catch(null),
-  // Job search (E14-4). Null means "not set in the app": DOSSIER_JOBS_SOURCE
+  // Job search (E14-4). Null means "not set in the app": HIRELINE_JOBS_SOURCE
   // decides. "OFF" is a choice. Each source keeps its own key, encrypted
   // like the AI key, so switching back and forth loses nothing.
   jobSource: z.enum([...JOB_SOURCES, "OFF"]).nullable().catch(null),
@@ -187,13 +187,13 @@ export const settingsSchema = z.object({
   updateDismissed: z.string().nullable().catch(null),
   // Gmail and Calendar (E15). Off until the Google account is connected.
   // The OAuth client, entered in Settings → Google. Null means "not set in the
-  // app": DOSSIER_GOOGLE_CLIENT_ID and DOSSIER_GOOGLE_CLIENT_SECRET decide.
+  // app": HIRELINE_GOOGLE_CLIENT_ID and HIRELINE_GOOGLE_CLIENT_SECRET decide.
   googleClientId: z.string().nullable().catch(null),
   /** Encrypted like the API keys (GOOGLE_CLIENT_SECRET); never sent to the client. */
   googleClientSecretEnc: z.string().nullable().catch(null),
   /** Read replies from Gmail. */
   gmailRead: flag(true),
-  /** Which mail the inbox check reads: only threads Dossier knows and company domains, or every new mail. */
+  /** Which mail the inbox check reads: only threads Hireline knows and company domains, or every new mail. */
   gmailScope: z.enum(["known", "all"]).catch("known"),
   /** Minutes between inbox checks. */
   gmailInterval: z.coerce.number().int().min(5).max(120).catch(10),

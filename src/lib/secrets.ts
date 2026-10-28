@@ -5,7 +5,7 @@ import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import { deriveKey, type KeyPurpose } from "@/lib/keys";
 
 // Secrets kept in the database, such as API keys (SET-1, PRD §11): AES-256-GCM
-// under a key derived from DOSSIER_SECRET for that kind of secret only, a
+// under a key derived from HIRELINE_SECRET for that kind of secret only, a
 // random IV per encryption, and a version prefix so the format can change
 // later. Stored as "v1.<iv>.<ciphertext + tag>", both base64url.
 
@@ -13,13 +13,13 @@ import { deriveKey, type KeyPurpose } from "@/lib/keys";
 export type SecretKind = { purpose: KeyPurpose; associatedData: string };
 
 /** The AI provider's API key (E6-2). */
-export const AI_API_KEY: SecretKind = { purpose: "api-key-encryption", associatedData: "dossier api key v1" };
+export const AI_API_KEY: SecretKind = { purpose: "api-key-encryption", associatedData: "hireline api key v1" };
 /** A job source's API key (E14-4). */
-export const JOB_SOURCE_KEY: SecretKind = { purpose: "job-source-key-encryption", associatedData: "dossier job source key v1" };
+export const JOB_SOURCE_KEY: SecretKind = { purpose: "job-source-key-encryption", associatedData: "hireline job source key v1" };
 /** The Google account's refresh token (E15-1). */
-export const GOOGLE_TOKEN: SecretKind = { purpose: "google-token-encryption", associatedData: "dossier google token v1" };
+export const GOOGLE_TOKEN: SecretKind = { purpose: "google-token-encryption", associatedData: "hireline google token v1" };
 /** The Google OAuth client's secret, entered in Settings → Google. */
-export const GOOGLE_CLIENT_SECRET: SecretKind = { purpose: "google-client-secret-encryption", associatedData: "dossier google client secret v1" };
+export const GOOGLE_CLIENT_SECRET: SecretKind = { purpose: "google-client-secret-encryption", associatedData: "hireline google client secret v1" };
 
 const VERSION = "v1";
 const IV_BYTES = 12;

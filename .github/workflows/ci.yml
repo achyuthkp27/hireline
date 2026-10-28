@@ -57,22 +57,22 @@ jobs:
     runs-on: ubuntu-latest
     services:
       # For the database tests (*.db.test.ts), which create and migrate their own
-      # "dossier_test" database on this server.
+      # "hireline_test" database on this server.
       postgres:
         image: postgres:18-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: dossier
+          POSTGRES_DB: hireline
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres -d dossier"
+          --health-cmd "pg_isready -U postgres -d hireline"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dossier
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hireline
       # Same versions as the Dockerfile: Node 24 with the Yarn release pinned in
       # package.json (packageManager), installed through corepack.
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
@@ -112,22 +112,22 @@ jobs:
     if: ${{ !cancelled() && needs.checked.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
     services:
-      # The tests create and migrate their own "dossier_e2e" database here.
+      # The tests create and migrate their own "hireline_e2e" database here.
       postgres:
         image: postgres:18-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: dossier
+          POSTGRES_DB: hireline
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres -d dossier"
+          --health-cmd "pg_isready -U postgres -d hireline"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dossier
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hireline
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
     steps:
       - uses: actions/checkout@v7

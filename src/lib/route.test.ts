@@ -23,8 +23,8 @@ describe("isSameOrigin", () => {
 
   it("uses X-Forwarded-Host behind a reverse proxy", () => {
     const behindProxy = request("POST", {
-      origin: "https://dossier.example.com",
-      "x-forwarded-host": "dossier.example.com",
+      origin: "https://hireline.example.com",
+      "x-forwarded-host": "hireline.example.com",
     });
     expect(isSameOrigin(behindProxy)).toBe(true);
   });

@@ -6,11 +6,11 @@ set -eu
 
 cd /app/tools
 if ! node node_modules/prisma/build/index.js migrate deploy; then
-  echo "Dossier didn't start: applying the database migrations failed (see the error above). See Troubleshooting in the wiki: https://github.com/AienTech/dossier/wiki/Troubleshooting" >&2
+  echo "Hireline didn't start: applying the database migrations failed (see the error above). See Troubleshooting in the docs: https://github.com/achyuthkp27/hireline/blob/main/docs/troubleshooting.md" >&2
   exit 1
 fi
 if ! node seed.mjs; then
-  echo "Dossier didn't start: loading the built-in themes failed (see the error above)." >&2
+  echo "Hireline didn't start: loading the built-in themes failed (see the error above)." >&2
   exit 1
 fi
 

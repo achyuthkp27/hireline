@@ -21,14 +21,14 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         <div className="flex flex-col items-start gap-2">
           <BrandMark className="size-10" />
           <div className="flex flex-col">
-            <div className="font-serif text-[30px] font-medium tracking-[-0.01em]">Dossier</div>
+            <div className="font-serif text-[30px] font-medium tracking-[-0.01em]">Hireline</div>
             <div className="text-sm text-muted">Your job search, on your server</div>
           </div>
         </div>
         <LoginForm next={typeof next === "string" ? next : undefined} />
         <p className="text-meta leading-[1.6] text-pretty text-muted">
           Your password is set on the server, as a hash in{" "}
-          <code className="font-mono text-label">DOSSIER_PASSWORD</code>. Forgot it? Make a new hash with{" "}
+          <code className="font-mono text-label">HIRELINE_PASSWORD</code>. Forgot it? Make a new hash with{" "}
           <code className="font-mono text-label">hash-password</code> and restart.
         </p>
       </div>

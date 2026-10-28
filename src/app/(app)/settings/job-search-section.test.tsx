@@ -95,7 +95,7 @@ describe("JobSearchSection", () => {
     render(<JobSearchSection initial={off} />);
     await userEvent.click(screen.getByRole("radio", { name: "Bundesagentur für Arbeit" }));
     expect(saveJobSource).not.toHaveBeenCalled();
-    expect(screen.getByText(/has no official API\. Dossier searches it through the access its own job search uses, without its permission/)).toBeInTheDocument();
+    expect(screen.getByText(/has no official API\. Hireline searches it through the access its own job search uses, without its permission/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /The BA's terms of use/ })).toHaveAttribute("href", "https://www.arbeitsagentur.de/datei/nutzungsbedingungen_ba036575.pdf");
     expect(screen.queryByRole("button", { name: "Test connection" })).not.toBeInTheDocument();
 
@@ -131,7 +131,7 @@ describe("JobSearchSection", () => {
 
   it("shows keys from the environment and keys that can't be read", () => {
     const { unmount } = render(<JobSearchSection initial={withSource({ source: "JSEARCH", jsearch: { host: "openwebninja", keyState: "env" } })} />);
-    expect(screen.getByLabelText("API key")).toHaveAttribute("placeholder", "Using DOSSIER_JSEARCH_KEY · type one to save it here");
+    expect(screen.getByLabelText("API key")).toHaveAttribute("placeholder", "Using HIRELINE_JSEARCH_KEY · type one to save it here");
     unmount();
     render(<JobSearchSection initial={withSource({ source: "JSEARCH", jsearch: { host: "openwebninja", keyState: "unreadable" } })} />);
     expect(screen.getByText("Your saved key can't be read. Please enter it again.")).toBeInTheDocument();

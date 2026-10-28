@@ -139,7 +139,7 @@ export function JobSearchSection({ initial }: { initial: JobSearchSettingsView }
                 <KeyField
                   label="API key"
                   keyState={view.jsearch.keyState}
-                  envName="DOSSIER_JSEARCH_KEY"
+                  envName="HIRELINE_JSEARCH_KEY"
                   getKey={{ href: JSEARCH_KEY_URLS[view.jsearch.host], text: view.jsearch.host === "rapidapi" ? "JSearch on RapidAPI" : "OpenWeb Ninja" }}
                   onSave={(change) => saveKey("JSEARCH", change)}
                 />
@@ -159,7 +159,7 @@ export function JobSearchSection({ initial }: { initial: JobSearchSettingsView }
                 <KeyField
                   label="App key"
                   keyState={view.adzuna.keyState}
-                  envName="DOSSIER_ADZUNA_KEY"
+                  envName="HIRELINE_ADZUNA_KEY"
                   getKey={{ href: SOURCE_INFO.ADZUNA.keyUrl!, text: "Adzuna's developer site" }}
                   onSave={(change) => saveKey("ADZUNA", change)}
                 />

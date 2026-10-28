@@ -4949,9 +4949,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dossier.aien.me@workspace:.":
+"hireline@workspace:.":
   version: 0.0.0-use.local
-  resolution: "dossier.aien.me@workspace:."
+  resolution: "hireline@workspace:."
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.128.0"
     "@axe-core/playwright": "npm:^4.13.0"

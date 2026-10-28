@@ -3,8 +3,8 @@
 // renders the right one from the first paint, with no flash and no inline
 // script. Read on the server and the client alike.
 
-export const COLOR_SCHEME_COOKIE = "dossier_theme";
-export const SIDEBAR_COOKIE = "dossier_sidebar";
+export const COLOR_SCHEME_COOKIE = "hireline_theme";
+export const SIDEBAR_COOKIE = "hireline_sidebar";
 
 export type ColorScheme = "light" | "dark";
 

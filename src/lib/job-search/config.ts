@@ -11,13 +11,13 @@ import type { JobSource, JSearchHost } from "./search";
 import { ARBEITSAGENTUR_NOTE, SOURCE_INFO, type JobKeyState, type JobSearchSettingsView } from "./sources";
 
 // Which job source to search, and with which key (E14-4): what's saved in
-// Settings, or else the DOSSIER_JOBS_* variables. Each source keeps its own
+// Settings, or else the HIRELINE_JOBS_* variables. Each source keeps its own
 // key, so a key only ever goes to the source it's for.
 
 export type JobSearchConfig = {
   /** The source in effect; null while job search is off. */
   source: JobSource | null;
-  /** Whether the choice is saved in Settings, rather than coming from DOSSIER_JOBS_SOURCE. */
+  /** Whether the choice is saved in Settings, rather than coming from HIRELINE_JOBS_SOURCE. */
   saved: boolean;
   jsearch: { key: string | null; host: JSearchHost; keyState: JobKeyState };
   adzuna: { appId: string; key: string | null; keyState: JobKeyState };
@@ -31,10 +31,10 @@ export type JobSearchConfig = {
 type SavedJobSettings = Pick<SettingsData, "jobSource" | "jsearchKeyEnc" | "jsearchHost" | "adzunaAppId" | "adzunaKeyEnc" | "arbeitsagenturAcceptedAt">;
 type JobEnv = Pick<
   Env,
-  "DOSSIER_JOBS_SOURCE" | "DOSSIER_JSEARCH_KEY" | "DOSSIER_JSEARCH_HOST" | "DOSSIER_ADZUNA_APP_ID" | "DOSSIER_ADZUNA_KEY" | "DOSSIER_JOBS_ARBEITSAGENTUR"
+  "HIRELINE_JOBS_SOURCE" | "HIRELINE_JSEARCH_KEY" | "HIRELINE_JSEARCH_HOST" | "HIRELINE_ADZUNA_APP_ID" | "HIRELINE_ADZUNA_KEY" | "HIRELINE_JOBS_ARBEITSAGENTUR"
 >;
 
-const FROM_ENV: Record<NonNullable<Env["DOSSIER_JOBS_SOURCE"]>, JobSource | null> = {
+const FROM_ENV: Record<NonNullable<Env["HIRELINE_JOBS_SOURCE"]>, JobSource | null> = {
   jsearch: "JSEARCH",
   adzuna: "ADZUNA",
   arbeitsagentur: "ARBEITSAGENTUR",
@@ -55,9 +55,9 @@ function keyOf(stored: string | null, fromEnv: string | undefined, secret?: stri
 }
 
 export function resolveJobSearchConfig(saved: SavedJobSettings, source: JobEnv, secret?: string): JobSearchConfig {
-  const jsearchKey = keyOf(saved.jsearchKeyEnc, source.DOSSIER_JSEARCH_KEY, secret);
-  const offered = source.DOSSIER_JOBS_ARBEITSAGENTUR !== "off";
-  const chosen = saved.jobSource ? (saved.jobSource === "OFF" ? null : saved.jobSource) : source.DOSSIER_JOBS_SOURCE ? FROM_ENV[source.DOSSIER_JOBS_SOURCE] : null;
+  const jsearchKey = keyOf(saved.jsearchKeyEnc, source.HIRELINE_JSEARCH_KEY, secret);
+  const offered = source.HIRELINE_JOBS_ARBEITSAGENTUR !== "off";
+  const chosen = saved.jobSource ? (saved.jobSource === "OFF" ? null : saved.jobSource) : source.HIRELINE_JOBS_SOURCE ? FROM_ENV[source.HIRELINE_JOBS_SOURCE] : null;
   return {
     // A BA choice saved before the server turned it off counts as Off.
     source: chosen === "ARBEITSAGENTUR" && !offered ? null : chosen,
@@ -65,11 +65,11 @@ export function resolveJobSearchConfig(saved: SavedJobSettings, source: JobEnv, 
     jsearch: {
       ...jsearchKey,
       // An environment key goes with the environment's host, when it names one.
-      host: jsearchKey.keyState === "env" && source.DOSSIER_JSEARCH_HOST ? source.DOSSIER_JSEARCH_HOST : saved.jsearchHost,
+      host: jsearchKey.keyState === "env" && source.HIRELINE_JSEARCH_HOST ? source.HIRELINE_JSEARCH_HOST : saved.jsearchHost,
     },
     adzuna: {
-      appId: saved.adzunaAppId ?? source.DOSSIER_ADZUNA_APP_ID ?? "",
-      ...keyOf(saved.adzunaKeyEnc, source.DOSSIER_ADZUNA_KEY, secret),
+      appId: saved.adzunaAppId ?? source.HIRELINE_ADZUNA_APP_ID ?? "",
+      ...keyOf(saved.adzunaKeyEnc, source.HIRELINE_ADZUNA_KEY, secret),
     },
     arbeitsagentur: { offered, acceptedAt: saved.arbeitsagenturAcceptedAt },
   };
@@ -82,12 +82,12 @@ export async function loadJobSearchConfig(): Promise<JobSearchConfig> {
 
 /**
  * For the server log at start (#223): the Bundesagentur für Arbeit's note,
- * when DOSSIER_JOBS_SOURCE chooses it rather than Settings; null otherwise.
+ * when HIRELINE_JOBS_SOURCE chooses it rather than Settings; null otherwise.
  */
 export function arbeitsagenturStartupNotice(config: JobSearchConfig): string | null {
   if (config.source !== "ARBEITSAGENTUR" || config.saved) return null;
   const waiting = config.arbeitsagentur.acceptedAt ? "" : " It isn't searched until you tick “I understand” in Settings → Job search.";
-  return `Job search: DOSSIER_JOBS_SOURCE chooses the Bundesagentur für Arbeit. ${ARBEITSAGENTUR_NOTE}${waiting}`;
+  return `Job search: HIRELINE_JOBS_SOURCE chooses the Bundesagentur für Arbeit. ${ARBEITSAGENTUR_NOTE}${waiting}`;
 }
 
 /** What Settings → Job search shows: the source and the keys' states, never the keys. */
@@ -102,9 +102,9 @@ export function jobSearchView(config: JobSearchConfig): JobSearchSettingsView {
 
 /**
  * Where a source's requests go: its own address, unless the end-to-end
- * tests point every source at their fake one (DOSSIER_JOBS_TEST_BASE_URL).
+ * tests point every source at their fake one (HIRELINE_JOBS_TEST_BASE_URL).
  */
-export function requestContext(source: JobSource, base = env.DOSSIER_JOBS_TEST_BASE_URL): RequestContext {
+export function requestContext(source: JobSource, base = env.HIRELINE_JOBS_TEST_BASE_URL): RequestContext {
   return base ? { baseUrl: `${base.replace(/\/+$/, "")}/${source.toLowerCase()}` } : {};
 }
 
