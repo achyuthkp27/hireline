@@ -334,6 +334,11 @@ describe("importExport (E10-6)", () => {
 });
 
 describe("parseExport (E10-6)", () => {
+  it("reads an export made by Dossier, which Hireline started from", async () => {
+    const fromDossier = { ...JSON.parse(JSON.stringify(await buildExport(prisma(), { now }))), format: "dossier-export" };
+    expect(parseExport(JSON.stringify(fromDossier))).toMatchObject({ ok: true, data: { format: "dossier-export" } });
+  });
+
   it("explains what's wrong with a file", async () => {
     const good = JSON.parse(JSON.stringify(await buildExport(prisma(), { now })));
     expect(parseExport("not json")).toEqual({ ok: false, error: "That file isn't a Hireline export: it isn't JSON." });

@@ -2,7 +2,7 @@ import "server-only";
 
 import { Prisma, type PrismaClient } from "@/generated/prisma/client";
 import { encryptApiKey } from "@/lib/ai/api-key";
-import { EXPORT_FORMAT, EXPORT_SCHEMA_VERSION, EXPORT_SCHEMA_VERSIONS, exportSchema, INSTALL_SETTINGS, SECRET_SETTINGS, type HirelineExport } from "@/lib/data-export";
+import { EXPORT_SCHEMA_VERSION, EXPORT_SCHEMA_VERSIONS, exportSchema, IMPORT_FORMATS, INSTALL_SETTINGS, SECRET_SETTINGS, type HirelineExport } from "@/lib/data-export";
 import { encryptSecret, JOB_SOURCE_KEY } from "@/lib/secrets";
 
 // Restoring from an export file (E10-6, SET-10): everything is replaced in
@@ -20,7 +20,7 @@ export function parseExport(text: string): { ok: true; data: HirelineExport } | 
     return { ok: false, error: "That file isn't a Hireline export: it isn't JSON." };
   }
   const header = json as { format?: unknown; schemaVersion?: unknown };
-  if (typeof json !== "object" || json === null || header.format !== EXPORT_FORMAT) {
+  if (typeof json !== "object" || json === null || !IMPORT_FORMATS.some((format) => format === header.format)) {
     return { ok: false, error: "That file isn't a Hireline export." };
   }
   if (typeof header.schemaVersion !== "number") return { ok: false, error: "That export has no schema version, so it can't be read." };

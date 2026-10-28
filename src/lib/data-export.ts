@@ -40,6 +40,8 @@ import { appVersion } from "@/lib/version";
 // behind: they belong to the server or the mailbox, not the user's data.
 
 export const EXPORT_FORMAT = "hireline-export";
+/** The formats imports read: Hireline's, and Dossier's, which Hireline started from and which has the same shape, so its users can move over. */
+export const IMPORT_FORMATS = [EXPORT_FORMAT, "dossier-export"] as const;
 /** Bump when the file's shape changes; imports refuse versions they don't know. 2 added Find jobs' postings and keys (E14-9), 3 projects (PRO-13) and the job agent (E16), 4 facts (PRO-14, APP-15), 5 publications (#218), the profile photo's theme and application options (#224) and Startups (#222). */
 export const EXPORT_SCHEMA_VERSION = 5;
 /** The versions imports can read. */
@@ -312,7 +314,7 @@ const postingSearch = z.object({
 
 /** An export file as read back (E10-6). */
 export const exportSchema = z.object({
-  format: z.literal(EXPORT_FORMAT),
+  format: z.enum(IMPORT_FORMATS),
   schemaVersion: z.literal([1, 2, 3, 4, 5]),
   appVersion: text,
   exportedAt: date,
