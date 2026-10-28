@@ -72,15 +72,6 @@ const schema = z.object({
         error: "HIRELINE_BACKUP_RETENTION_DAYS must be at least 1.",
       }),
     ),
-  // The daily usage ping (usage-ping.ts): unset, Hireline asks after
-  // sign-in and sends nothing before a yes; on or off answers for good.
-  HIRELINE_TELEMETRY: optional(
-    z
-      .string()
-      .trim()
-      .toLowerCase()
-      .pipe(z.enum(["on", "off"], { error: (issue) => `HIRELINE_TELEMETRY must be on or off (got "${String(issue.input)}").` })),
-  ),
   HIRELINE_AI_PROVIDER: optional(
     z.enum(AI_PROVIDERS, {
       error: (issue) =>
@@ -151,11 +142,6 @@ const schema = z.object({
   // (e2e/fake-google.mts).
   HIRELINE_GOOGLE_TEST_BASE_URL: optional(
     z.url({ protocol: /^https?$/, error: "HIRELINE_GOOGLE_TEST_BASE_URL must be an http:// or https:// URL." }),
-  ),
-  // For the end-to-end tests only: sends the usage ping to <url> instead of
-  // the project's receiver (e2e/fake-jobs.mts answers).
-  HIRELINE_USAGE_PING_TEST_URL: optional(
-    z.url({ protocol: /^https?$/, error: "HIRELINE_USAGE_PING_TEST_URL must be an http:// or https:// URL." }),
   ),
   // For the end-to-end tests only: asks <url> for the latest release instead
   // of GitHub's API (e2e/fake-jobs.mts answers).

@@ -29,17 +29,7 @@ describe("parseEnv", () => {
       ...valid,
       HIRELINE_DATA_DIR: "/data",
       HIRELINE_BACKUP_RETENTION_DAYS: 14,
-      HIRELINE_TELEMETRY: undefined,
     });
-  });
-
-  it("reads whether the usage ping is on", () => {
-    // Unset or empty: not decided, so Hireline asks (#172).
-    expect(parseEnv({ ...valid, HIRELINE_TELEMETRY: "" }).HIRELINE_TELEMETRY).toBeUndefined();
-    expect(parseEnv(valid).HIRELINE_TELEMETRY).toBeUndefined();
-    expect(parseEnv({ ...valid, HIRELINE_TELEMETRY: "ON" }).HIRELINE_TELEMETRY).toBe("on");
-    expect(parseEnv({ ...valid, HIRELINE_TELEMETRY: " Off " }).HIRELINE_TELEMETRY).toBe("off");
-    expect(problems({ ...valid, HIRELINE_TELEMETRY: "false" })).toEqual(['HIRELINE_TELEMETRY must be on or off (got "false").']);
   });
 
   it("reads the optional variables", () => {

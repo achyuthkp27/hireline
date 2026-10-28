@@ -43,8 +43,6 @@ services:
       HIRELINE_AI_MODEL: ${HIRELINE_AI_MODEL:-}
       HIRELINE_AI_KEY: ${HIRELINE_AI_KEY:-}
       HIRELINE_AI_TIMEOUT_SECONDS: ${HIRELINE_AI_TIMEOUT_SECONDS:-}
-      # The daily usage ping: unset, Hireline asks after sign-in; on or off answers in advance (see Privacy in the docs).
-      HIRELINE_TELEMETRY: ${HIRELINE_TELEMETRY:-}
       # Defaults for Settings → Job search.
       HIRELINE_JOBS_SOURCE: ${HIRELINE_JOBS_SOURCE:-}
       HIRELINE_JSEARCH_KEY: ${HIRELINE_JSEARCH_KEY:-}
