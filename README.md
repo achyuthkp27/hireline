@@ -23,12 +23,6 @@ It's for one person on a small server: one password, your data in your own Postg
 
 **Get started:** [run it on your computer](#run-it-on-your-computer) in a few minutes, or [self-host it](#self-hosting) on a server. The [installation guide](https://github.com/achyuthkp27/hireline/tree/main/docs) covers every way: Docker with or without Compose, Node.js, a plain Ubuntu server, CapRover, Coolify and Dokploy.
 
-## Demo
-
-![Hireline in use: the dashboard, dragging a card on the board, a new application from a pasted posting, refining the tailored resume in the chat, the cover letter, and switching resume themes](.github/images/demo.gif)
-
-<sub>Recorded with the demo data (Jane Doe is made up) and a stand-in AI server that answers at once, played at 1.2× speed. With a real model, reading a posting and writing the documents takes from a few seconds to a few minutes.</sub>
-
 ## Features
 
 - **Profile:** basics, skills and languages, experience, projects, education, publications and references, in the order you choose, with a strength meter that counts only what a profile needs. Projects (side, open-source, course or thesis work) show what you can do where your job titles don't yet. Publications are cited in your own style, with bold and italics, and go on resumes word for word. Start it from an existing resume (PDF, Word or Markdown) if you like.
@@ -44,31 +38,6 @@ It's for one person on a small server: one password, your data in your own Postg
 - **Gmail and Calendar (optional):** connect your Google account to send an application from your own address with its PDFs attached, see employers' replies next to each application, have the AI read what they ask and draft your answer from your profile, offer interview times you're free, and see your month and the week ahead on the dashboard, with interviews kept in step with Google Calendar both ways. Nothing is sent without your confirmation. Set it up by entering your Google OAuth client in Settings → Google, or with `HIRELINE_GOOGLE_CLIENT_ID` and `HIRELINE_GOOGLE_CLIENT_SECRET` (see [Connecting Gmail and Calendar](https://github.com/achyuthkp27/hireline/blob/main/docs/gmail-and-calendar.md)).
 - **Track:** a board and a table of every application, and a dashboard with your funnel (last 30 days, 90 days or all time), a week-by-week chart, what's worth a look next, upcoming interviews included, and a calendar.
 - **Your data:** export and import everything as one file, nightly backups, and Delete everything.
-
-## Screenshots
-
-![The dashboard: your funnel, a week-by-week chart and what's worth a look next](.github/images/dashboard.png)
-
-<table>
-  <tr>
-    <td width="50%"><img src=".github/images/application.png" alt="An application with its tailored resume and the chat that refines it"><br>An application: the tailored resume, and a chat to refine it</td>
-    <td width="50%"><img src=".github/images/new-application.png" alt="A new application, showing how the profile matches the posting's requirements"><br>A new application: how you match the posting</td>
-  </tr>
-  <tr>
-    <td><img src=".github/images/applications.png" alt="The applications board, with columns from draft to offer"><br>Every application on a board, from draft to offer</td>
-    <td><img src=".github/images/find-jobs.png" alt="Find jobs: postings near the profile's city, with one open"><br>Find jobs and start an application from a posting</td>
-  </tr>
-  <tr>
-    <td><img src=".github/images/resume.png" alt="The base resume next to its themes"><br>The base resume, with twelve themes and a theme builder</td>
-    <td><img src=".github/images/profile.png" alt="The profile editor, with its sections and strength meter"><br>One profile that every resume and letter comes from</td>
-  </tr>
-  <tr>
-    <td><img src=".github/images/inbox.png" alt="The inbox: employers' replies from Gmail, what each one asks, and mail to link to an application"><br>Replies from Gmail, read by the AI, with answers it drafts</td>
-    <td><img src=".github/images/calendar.png" alt="The dashboard on a wide window, with the calendar beside the cards: the month, and the week ahead with an interview among the Google Calendar's events"><br>Your interviews and Google Calendar on the dashboard, kept in step</td>
-  </tr>
-</table>
-
-<sub>The screenshots show the demo data: Jane Doe is made up.</sub>
 
 ## Run it on your computer
 
@@ -147,3 +116,5 @@ Working on Hireline itself: see [DEVELOPMENT.md](DEVELOPMENT.md).
 ## License
 
 Hireline is free software under the [GNU Affero General Public License v3.0](LICENSE). You may use, change and share it; if you run a changed version for others over a network, you must offer them its source code.
+
+Hireline started on 28 October 2026 from [Dossier](https://github.com/AienTech/dossier) 1.9.2 by AienTech, under the same license, and has been changed since.
