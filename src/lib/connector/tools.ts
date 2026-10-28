@@ -30,7 +30,7 @@ import { readPastedPosting } from "./handoff";
 import { saveWrittenApplication, WRITTEN_IN_CLAUDE, writtenDetailsSchema, writtenLetterSchema, writtenMatchSchema, writtenResumeSchema } from "./write";
 
 // The Claude connector's tools (#221, src/app/api/mcp), adapted from Anirudh
-// Sharma's fork of Hireline: search for jobs, read the profile and the
+// Sharma's fork of Dossier: search for jobs, read the profile and the
 // applications, save applications and fit scores, and move applications
 // along. Like the AI features, they never send anything, and no tool
 // deletes or archives. Contact details, private notes and the letter's

@@ -11,7 +11,7 @@ import { loadSettings } from "@/lib/settings-data";
 // Sign-in for the Claude connector (#221, src/app/api/mcp): a small OAuth 2.1
 // authorization server, as Claude's custom connectors expect it, with
 // Dynamic Client Registration and PKCE (S256 only). Adapted from Anirudh
-// Sharma's fork of Hireline. It keeps nothing in the database: clients, codes
+// Sharma's fork of Dossier. It keeps nothing in the database: clients, codes
 // and tokens are signed with keys derived from HIRELINE_SECRET, and every one
 // carries a fingerprint of HIRELINE_PASSWORD and the time the connector was
 // turned on (connectorEnabledAt). So a new password, a new secret, Disconnect
