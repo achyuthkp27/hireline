@@ -14,6 +14,7 @@ import { formatShortDate } from "@/lib/dates";
 import { env } from "@/lib/env";
 import { googleConnection } from "@/lib/google/account";
 import { loadGoogleClientConfig, redirectUri } from "@/lib/google/oauth";
+import { pageOrigin } from "@/lib/google/origin";
 import { lastKnownTimeZone, userTimeZone } from "@/lib/time-zone";
 import { appVersion } from "@/lib/version";
 import { prisma } from "@/lib/prisma";
@@ -75,7 +76,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/setting
             connection={await googleView()}
             client={await googleClientView()}
             browserTimeZone={(await userTimeZone()) ?? null}
-            redirectUri={redirectUri(await requestOrigin())}
+            redirectUri={redirectUri(pageOrigin(await headers()))}
             initial={{
               gmailRead: settings.gmailRead,
               gmailScope: settings.gmailScope,
@@ -93,7 +94,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/setting
           />
         </>
       ) : section === "claude" ? (
-        <ConnectorSection initial={{ on: settings.connectorEnabledAt !== null }} address={mcpUrl(env.HIRELINE_PUBLIC_URL ?? (await requestOrigin()))} />
+        <ConnectorSection initial={{ on: settings.connectorEnabledAt !== null }} address={mcpUrl(pageOrigin(await headers()))} />
       ) : section === "data" ? (
         <DataSection
           hasApiKey={[settings.apiKeyEnc, settings.jsearchKeyEnc, settings.adzunaKeyEnc].some((key) => key !== null)}
@@ -145,14 +146,6 @@ async function googleView() {
 async function googleClientView() {
   const { id, idState, secretState } = await loadGoogleClientConfig();
   return { id, idState, secretState };
-}
-
-/** The address this page was reached at, for the redirect URI to register. */
-async function requestOrigin(): Promise<string> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("x-forwarded-host")?.split(",")[0]?.trim() || requestHeaders.get("host") || "localhost:3000";
-  const protocol = requestHeaders.get("x-forwarded-proto")?.split(",")[0]?.trim() || (host.startsWith("localhost") ? "http" : "https");
-  return `${protocol}://${host}`;
 }
 
 /** The file name preview uses your name and your latest application, or sample values (SET-8). */
