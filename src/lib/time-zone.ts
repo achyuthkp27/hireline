@@ -34,7 +34,22 @@ export async function lastKnownTimeZone(): Promise<string> {
   } catch {
     // No request: cookies() can't be read here.
   }
-  return zone ?? (await loadSettings()).browserTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return zone ?? (await loadSettings()).browserTimeZone ?? serverTimeZone();
+}
+
+/**
+ * The server's own zone. Without one, as with TZ set but empty (Compose
+ * passes it so when .env leaves it out), Intl calls it "Etc/Unknown" and
+ * then refuses that name; such a server keeps UTC, so that's the answer.
+ */
+export function serverTimeZone(): string {
+  const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: zone });
+    return zone;
+  } catch {
+    return "UTC";
+  }
 }
 
 /** Keeps the browser's zone for work done without a request; called after a page with the zone its request had. */

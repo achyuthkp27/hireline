@@ -18,7 +18,7 @@ vi.mock("next/headers", () => ({
   },
 }));
 
-import { lastKnownTimeZone, rememberBrowserTimeZone, userTimeZone } from "./time-zone";
+import { lastKnownTimeZone, rememberBrowserTimeZone, serverTimeZone, userTimeZone } from "./time-zone";
 
 const prisma = () => db.client!;
 const saved = async () => (await prisma().setting.findUnique({ where: { key: "browserTimeZone" } }))?.value;
@@ -55,5 +55,20 @@ describe("the user's time zone", () => {
     expect(await lastKnownTimeZone()).toBe(Intl.DateTimeFormat().resolvedOptions().timeZone);
     await rememberBrowserTimeZone("Europe/Berlin");
     expect(await lastKnownTimeZone()).toBe("Europe/Berlin");
+  });
+
+  it("takes UTC for a server without a zone, which Intl calls Etc/Unknown", async () => {
+    const resolve = Intl.DateTimeFormat.prototype.resolvedOptions;
+    const spy = vi.spyOn(Intl.DateTimeFormat.prototype, "resolvedOptions").mockImplementation(function (this: Intl.DateTimeFormat) {
+      return { ...resolve.call(this), timeZone: "Etc/Unknown" };
+    });
+    try {
+      expect(serverTimeZone()).toBe("UTC");
+      request.inRequest = false;
+      expect(await lastKnownTimeZone()).toBe("UTC");
+    } finally {
+      spy.mockRestore();
+    }
+    expect(serverTimeZone()).toBe(Intl.DateTimeFormat().resolvedOptions().timeZone);
   });
 });
