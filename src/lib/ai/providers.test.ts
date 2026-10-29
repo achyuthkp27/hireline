@@ -200,6 +200,27 @@ describe("AnthropicProvider", () => {
     expect(requests[0].body).toMatchObject({ output_config: { format: { type: "json_schema" } } });
   });
 
+  it("puts a schema the API won't compile into the instructions instead, learning that once per schema", async () => {
+    const tooLarge = "The compiled grammar is too large, which would cause performance issues. Simplify your tool schemas or reduce the number of strict tools.";
+    const requests = stubFetch(({ body }) =>
+      (body as { output_config?: { format?: unknown } }).output_config?.format
+        ? json({ type: "error", error: { type: "invalid_request_error", message: tooLarge } }, { status: 400 })
+        : anthropicMessage('{"name":"Jane","years":9}'),
+    );
+    const provider = new AnthropicProvider(`https://claude-${Math.random()}.example`, "sk-ant", "claude-sonnet-5", 60_000);
+    expect(await provider.complete({ ...ask, schema: Person, schemaName: "person" })).toEqual({ name: "Jane", years: 9 });
+    expect(await provider.complete({ ...ask, schema: Person, schemaName: "person" })).toEqual({ name: "Jane", years: 9 });
+    expect(requests.map((request) => "output_config" in (request.body as object))).toEqual([true, false, false]);
+    expect(requests[1].body).toMatchObject({ system: expect.stringMatching(/^Be brief\.\n\nReply with only a JSON object[\s\S]*"years"/) });
+  });
+
+  it("doesn't take other bad requests for a schema it can't compile", async () => {
+    const requests = stubFetch(() => json({ type: "error", error: { type: "invalid_request_error", message: "messages: at least one message is required" } }, { status: 400 }));
+    const provider = new AnthropicProvider(`https://claude-${Math.random()}.example`, "sk-ant", "claude-sonnet-5", 60_000);
+    expect(await failure(provider.complete({ ...ask, schema: Person }))).toMatchObject({ kind: "provider" });
+    expect(requests).toHaveLength(1);
+  });
+
   it("says when the model declines", async () => {
     stubFetch(() => anthropicMessage("", "refusal"));
     const provider = new AnthropicProvider("https://api.anthropic.com", "sk-ant", "claude-sonnet-5", 60_000);
